@@ -1,0 +1,100 @@
+---
+title: "Usage"
+header-includes:
+  - \usepackage{mathtools}
+  - \usepackage{bm}
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Usage}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(hatmatrix)
+```
+
+
+The `hatmatrix` package calculates the hat matrix for both Frequentist and Bayesian generalized linear regression models (GLM).
+
+In a Bayesian GLM, the response vector $Y \in \mathcal{R}^N$ follows
+
+\begin{align}
+ {Y}| {\beta}, \Phi &\sim N(X_1{\beta}_1 + X_2{\beta}_2, \Phi), \\
+ {\beta}_1 &\sim N(\alpha_1, C), \quad {\beta}_2 | \Sigma \sim N(\alpha_2, \Sigma), \\
+ \Sigma  &\sim f(\Sigma), \quad \Phi \sim f(\Phi),
+\end{align}
+where $X \coloneqq \begin{bmatrix}X_1 & X_2\end{bmatrix} \in \mathcal{R}^{N\times P}$ is the design matrix, ${\beta}_1 \in \mathcal{R}^{P_1}$ is the vector of fixed effect coefficients, ${\beta}_2 \in \mathcal{R}^{P_2}$ the vector of random effect coefficients, such that ${\beta} \coloneqq \begin{bmatrix}{\beta}_1' & {\beta}_2'\end{bmatrix}' \in \mathcal{R}^{P}$, $C \in \mathcal{R}^{P_1 \times P_1}$ is positive-definite and typically a diagonal matrix, $\Sigma \in \mathcal{R}^{P_2 \times P_2}$ is positive-definite, and $\Phi \in \mathcal{R}^{N \times N}$ is diagonal and positive-definite.
+
+
+The posterior mean for $X\beta$ conditioned on variance parameters is
+\begin{equation}
+   E[X\bm{\beta} | \Sigma, \Phi, \bm{Y}] \sim  XVX'\Phi^{-1}\bm{Y},  \quad V = \left(X'\Phi^{-1}X + \begin{bmatrix}C^{-1} & 0 \\ 0 & \Sigma^{-1}\end{bmatrix}\right)^{-1},
+\end{equation}
+where $C^{-1}$ is taken as the matrix of $0$s, which {corresponds to the assumption that the fixed effects have infinite variance}. The hat matrix is then
+\begin{equation}
+XVX'\Phi^{-1}.
+\end{equation}
+
+
+This is a reasonable approximation of the posterior mean $E[X\beta | Y]$, as shown by Kass and Steffey (1989). Its accuracy is simple to determine by comparing the conditional expectation $E[X\bm{\beta}| \hat{\Sigma}, \hat{\Phi}, \bm{Y}]$ to the posterior expectation $E[X\bm{\beta} | \bm{Y}]$.
+
+
+In the Frequentist setting, the coefficients $\bm{\bm{\beta}_1}$ and variance parameters $\Phi$ and $\Sigma$ are fixed at their estimates, with
+\begin{align*}
+    {\bm{Y}} &= X_1\bm{\beta}_1 + X_2\bm{\beta}_2 + {\bm{\epsilon}}, \\
+    &\bm{\epsilon} \sim N(0, \Phi), \quad \bm{\beta}_2 \sim N(0, \Sigma).
+\end{align*}
+So, (\ref{ssbf-eqn:axe_linregr}) directly expresses the fitted values for the frequentist regression model and is not an approximation.
+
+
+
+
+# Functions
+
+- `get_x`
+- `get_noise`
+- `get_rcov`
+- `hatmatrix`
+    + essentially built on top of the `get_` functions
+    + `lm`
+    + lme4
+      + `lmer`
+      + `glm`
+      + `glmer`
+    + `glmm`
+    + `rstanarm`
+    + `brms`
+    + `gamm`
+    + `gamm4`
+- `calc_noise`
+- `calc_hatmatrix`
+
+
+# Table of distributions and link functions for calc_noise
+
+
+Family        Link function         Normal approximation
+-------       --------------      ----------------------
+Binomial*     logit                            
+              probit
+Poisson*      log
+Gamma         inverse
+Beta
+Dirichlet
+Categorical
+Multinomial
+Exponential
+
+*Also quasi-binomial, quasi-poisson with the same link functions.
+
+
+
+
