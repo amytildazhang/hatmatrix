@@ -6,9 +6,44 @@
 \usage{
 hatmatrix_calculator(Xf, Phi_inv, Xr = NULL, Sigma_inv = NULL)
 }
+\arguments{
+\item{Xf}{\mjeqn{X_f \text{ in `Details'.}}{}
+The \mjeqn{{N \times P_1}}{} model matrix for the fixed effects,
+where \mjeqn{N}{} is the amount of data and \mjeqn{P_1}{} the dimension
+of fixed effect coefficients. Must be full-rank.}
+
+\item{Phi_inv}{\mjeqn{\Phi^{-1} \text{ in `Details'.}}{} The \mjeqn{N}{}-length numeric
+vector with positive values
+corresponding to the precision of \mjeqn{Y | X\beta}{}.}
+
+\item{Xr}{\mjeqn{X_r \text{ in `Details'.}}{} \mjeqn{N \times P_2}{} model matrix for the random effects,
+where \mjeqn{P_2}{} is the dimension of random effect coefficients.
+Defaults to `NULL`.}
+
+\item{Sigma_inv}{\mjeqn{\Sigma^{-1} \text{ in `Details'.}}{} Sigma_inv \mjeqn{P_2 \times P_2}{} precision matrix for the random
+effects (\mjeqn{\Sigma^{-1}}{}). Must be positive-definite.
+Defaults to `NULL`.}
+}
 \value{
 A [`HatMatrixCalculator`] object.
 }
 \description{
-Create a new [`HatMatrixCalculator`] object.
+\loadmathjax
+}
+\details{
+For the regression model with response vector \mjeqn{Y \in R^{N}}{Y in R^N} and
+vector of coefficients \mjeqn{\beta \in R^P}{} such that
+\mjdeqn{Y| \beta, \Phi \sim N(X_f\beta_f + X_r\beta_r, \Phi),}{}
+\mjdeqn{\beta_f \sim N(0, C), \quad \beta_r \sim N(0, \Sigma),}{}
+where \mjeqn{\beta_f \in R^{P_f}}{} is the vector of fixed effect coefficients,
+\mjeqn{\beta_r \in R^{P_r}}{} the vector of random effect coefficients,
+\mjeqn{X_f}{} and \mjeqn{X_r}{} are likewise the design matrix corresponding to the
+fixed and random effects, respectively, and \mjeqn{\Sigma}{} is the random effect
+covariance matrix. The hat matrix, \mjeqn{W}{}, is then
+
+
+\mjdeqn{W = XVX'\Phi^{-1}}{},
+\mjdeqn{V = \left(X'\Phi^{-1}X + \begin{bmatrix} C^{-1} & 0 \\
+0 & \Sigma^{-1}\end{bmatrix}\right)^{-1}}{}.
+\mjeqn{C^{-1}}{C^-1} is taken to be the matrix of 0s.
 }

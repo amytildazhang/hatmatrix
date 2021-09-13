@@ -10,6 +10,50 @@ A `HatMatrixCalculator` object is an [R6][R6::R6Class] object created
 sub-matrix of the hat matrix,
 or the hat matrix based on a subset of the data.
 }
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{number}}{of data points (rows in \mjeqn{X_f}{X_f})}
+
+\item{\code{rows}}{selected from \mjeqn{W}{W} in the most recent call to [$calc()]}
+
+\item{\code{columns}}{selected from \mjeqn{W}{W} in the most recent call to [$calc()]}
+
+\item{\code{supplied}}{design matrix for fixed effects}
+
+\item{\code{supplied}}{design matrix for random effects}
+
+\item{\code{supplied}}{\mjeqn{\Sigma^{-1}}{Sigma^-1}}
+
+\item{\code{supplied}}{\mjeqn{\Phi^{-1}}{Phi^-1}}
+
+\item{\code{hat}}{matrix from most recent call to [$calc()]}
+}
+\if{html}{\out{</div>}}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{number}}{of data points (rows in \mjeqn{X_f}{X_f})}
+
+\item{\code{rows}}{selected from \mjeqn{W}{W} in the most recent call to [$calc()]}
+
+\item{\code{columns}}{selected from \mjeqn{W}{W} in the most recent call to [$calc()]}
+
+\item{\code{supplied}}{design matrix for fixed effects}
+
+\item{\code{supplied}}{design matrix for random effects}
+
+\item{\code{supplied}}{\mjeqn{\Sigma^{-1}}{Sigma^-1}}
+
+\item{\code{supplied}}{\mjeqn{\Phi^{-1}}{Phi^-1}}
+
+\item{\code{hat}}{matrix from most recent call to [$calc()]}
+
+\item{\code{V}}{matrix from most recent call to [$calc()]}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
